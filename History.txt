@@ -1,3 +1,7 @@
+=== ???
+
+* Fixed bug where passed ID for day cell would throw error on missing class name.
+
 === 0.2.2 / 2007-08-29
 
 * Fixed missing tr tag in thead section. [Ian Struble]
