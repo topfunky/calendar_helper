@@ -1,12 +1,12 @@
-CalendarHelper
-==============
+= CalendarHelper
+
+== DESCRIPTION:
 
 A simple helper for creating an HTML calendar. The "calendar" method will be automatically available to your view templates.
 
 There is also a Rails generator that copies some stylesheets for use alone or alongside existing stylesheets.
 
-Usage
-=====
+== SYNOPSIS:
 
   # Simple
   calendar(:year => 2005, :month => 6)
@@ -35,8 +35,7 @@ With Haml, use a helper to set options for each cell.
   = calendar(:year => @year, :month => @month, :first_day_of_week => 1) do |d|
     - render_calendar_cell(d)
 
-Authors
-=======
+== AUTHORS:
 
 Jeremy Voorhis -- http://jvoorhis.com
 Original implementation
@@ -44,15 +43,13 @@ Original implementation
 Geoffrey Grosenbach -- http://nubyonrails.com
 Test suite and conversion to a Rails plugin
 
-Contributors
-============
+== Contributors:
 
 * Jarkko Laine http://jlaine.net/
 * Tom Armitage http://infovore.org
 * Bryan Larsen http://larsen.st
 
-Usage
-=====
+== USAGE:
 
 See the RDoc (or use "rake rdoc").
 
