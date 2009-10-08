@@ -36,6 +36,7 @@ module CalendarHelper
   #                                           # Defaults to true.
   #   :previous_month_text   => nil           # Displayed left of the month name if set
   #   :next_month_text   => nil               # Displayed right of the month name if set
+  #   :month_header      => false             # If you use false, the current month header will disappear.
   #
   # For more customization, you can pass a code block to this method, that will get one argument, a Date object,
   # and return a values for the individual table cells. The block can return an array, [cell_text, cell_attrs],
@@ -81,7 +82,8 @@ module CalendarHelper
       :accessible => false,
       :show_today => true,
       :previous_month_text => nil,
-      :next_month_text => nil
+      :next_month_text => nil,
+      :month_header => true
     }
     options = defaults.merge options
 
@@ -98,16 +100,23 @@ module CalendarHelper
 
     # TODO Use some kind of builder instead of straight HTML
     cal = %(<table class="#{options[:table_class]}" border="0" cellspacing="0" cellpadding="0">)
-    cal << %(<thead><tr>)
-    if options[:previous_month_text] or options[:next_month_text]
-      cal << %(<th colspan="2">#{options[:previous_month_text]}</th>)
-      colspan=3
-    else
-      colspan=7
+    cal << %(<thead>)
+    
+    if (options[:month_header])
+      cal << %(<tr>)
+      if options[:previous_month_text] or options[:next_month_text]
+        cal << %(<th colspan="2">#{options[:previous_month_text]}</th>)
+        colspan=3
+      else
+        colspan=7
+      end
+      cal << %(<th colspan="#{colspan}" class="#{options[:month_name_class]}">#{Date::MONTHNAMES[options[:month]]}</th>)
+      cal << %(<th colspan="2">#{options[:next_month_text]}</th>) if options[:next_month_text]
+      cal << %(</tr>)
     end
-    cal << %(<th colspan="#{colspan}" class="#{options[:month_name_class]}">#{Date::MONTHNAMES[options[:month]]}</th>)
-    cal << %(<th colspan="2">#{options[:next_month_text]}</th>) if options[:next_month_text]
-    cal << %(</tr><tr class="#{options[:day_name_class]}">)
+    
+    cal << %(<tr class="#{options[:day_name_class]}">)
+    
     day_names.each do |d|
       unless d[options[:abbrev]].eql? d
         cal << "<th scope='col'><abbr title='#{d}'>#{d[options[:abbrev]]}</abbr></th>"
