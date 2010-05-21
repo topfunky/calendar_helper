@@ -1,5 +1,8 @@
-=== ???
+=== 2.2.3 / 2010-05-21
 
+* Don't crash if time zone is nil
+* Upgrade to latest Hoe
+* Added support to remove the month row on the table
 * Fixed bug where passed ID for day cell would throw error on missing class name.
 
 === 0.2.2 / 2007-08-29

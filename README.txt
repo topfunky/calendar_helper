@@ -2,7 +2,7 @@
 
 == DESCRIPTION:
 
-A simple helper for creating an HTML calendar. The "calendar" method will be automatically available to your view templates.
+A simple helper for creating an HTML calendar. The "calendar" method will be automatically available to your Rails view templates, or can be used with Sinatra or other webapps.
 
 There is also a Rails generator that copies some stylesheets for use alone or alongside existing stylesheets.
 
@@ -34,6 +34,12 @@ With Haml, use a helper to set options for each cell.
 
   = calendar(:year => @year, :month => @month, :first_day_of_week => 1) do |d|
     - render_calendar_cell(d)
+
+In Sinatra, include the CalendarHelper module in your helpers:
+
+  helpers do
+    include CalendarHelper
+  end
 
 == AUTHORS:
 
