@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'isolate/now'
 require 'rake'
 require 'rake/rdoctask'
 require 'hoe'
