@@ -15,28 +15,29 @@ module CalendarHelper
   #  :month # The month number to show the calendar for.
   # 
   # The following are optional, available for customizing the default behaviour:
-  #   :table_class       => "calendar"        # The class for the <table> tag.
-  #   :month_name_class  => "monthName"       # The class for the name of the month, at the top of the table.
-  #   :other_month_class => "otherMonth" # Not implemented yet.
-  #   :day_name_class    => "dayName"         # The class is for the names of the weekdays, at the top.
-  #   :day_class         => "day"             # The class for the individual day number cells.
-  #                                             This may or may not be used if you specify a block (see below).
-  #   :abbrev            => (0..2)            # This option specifies how the day names should be abbreviated.
-  #                                             Use (0..2) for the first three letters, (0..0) for the first, and
-  #                                             (0..-1) for the entire name.
-  #   :first_day_of_week => 0                 # Renders calendar starting on Sunday. Use 1 for Monday, and so on.
-  #   :accessible        => true              # Turns on accessibility mode. This suffixes dates within the
-  #                                           # calendar that are outside the range defined in the <caption> with 
-  #                                           # <span class="hidden"> MonthName</span>
-  #                                           # Defaults to false.
-  #                                           # You'll need to define an appropriate style in order to make this disappear. 
-  #                                           # Choose your own method of hiding content appropriately.
+  #   :table_class       => "calendar"                          # The class for the <table> tag.
+  #   :month_name_class  => "monthName"                         # The class for the name of the month, at the top of the table.
+  #   :other_month_class => "otherMonth"                        # Not implemented yet.
+  #   :day_name_class    => "dayName"                           # The class is for the names of the weekdays, at the top.
+  #   :day_class         => "day"                               # The class for the individual day number cells.
+  #                                                               This may or may not be used if you specify a block (see below).
+  #   :abbrev            => (0..2)                              # This option specifies how the day names should be abbreviated.
+  #                                                               Use (0..2) for the first three letters, (0..0) for the first, and
+  #                                                               (0..-1) for the entire name.
+  #   :first_day_of_week => 0                                   # Renders calendar starting on Sunday. Use 1 for Monday, and so on.
+  #   :accessible        => true                                # Turns on accessibility mode. This suffixes dates within the
+  #                                                             # calendar that are outside the range defined in the <caption> with 
+  #                                                             # <span class="hidden"> MonthName</span>
+  #                                                             # Defaults to false.
+  #                                                             # You'll need to define an appropriate style in order to make this disappear. 
+  #                                                             # Choose your own method of hiding content appropriately.
   #
-  #   :show_today        => false             # Highlights today on the calendar using the CSS class 'today'. 
-  #                                           # Defaults to true.
-  #   :previous_month_text   => nil           # Displayed left of the month name if set
-  #   :next_month_text   => nil               # Displayed right of the month name if set
-  #   :month_header      => false             # If you use false, the current month header will disappear.
+  #   :show_today        => false                               # Highlights today on the calendar using the CSS class 'today'. 
+  #                                                             # Defaults to true.
+  #   :previous_month_text   => nil                             # Displayed left of the month name if set
+  #   :next_month_text   => nil                                 # Displayed right of the month name if set
+  #   :month_header      => false                               # If you use false, the current month header will disappear.
+  #   :calendar_title    => Date::MONTHNAMES[options[:month]]   # Pass in a custom title for the calendar. Defaults to month name
   #
   # For more customization, you can pass a code block to this method, that will get one argument, a Date object,
   # and return a values for the individual table cells. The block can return an array, [cell_text, cell_attrs],
@@ -72,18 +73,19 @@ module CalendarHelper
     block                        ||= Proc.new {|d| nil}
 
     defaults = {
-      :table_class => 'calendar',
-      :month_name_class => 'monthName',
-      :other_month_class => 'otherMonth',
-      :day_name_class => 'dayName',
-      :day_class => 'day',
-      :abbrev => (0..2),
-      :first_day_of_week => 0,
-      :accessible => false,
-      :show_today => true,
+      :table_class         => 'calendar',
+      :month_name_class    => 'monthName',
+      :other_month_class   => 'otherMonth',
+      :day_name_class      => 'dayName',
+      :day_class           => 'day',
+      :abbrev              => (0..2),
+      :first_day_of_week   => 0,
+      :accessible          => false,
+      :show_today          => true,
       :previous_month_text => nil,
-      :next_month_text => nil,
-      :month_header => true
+      :next_month_text     => nil,
+      :month_header        => true,
+      :calendar_title      => Date::MONTHNAMES[options[:month]]
     }
     options = defaults.merge options
 
@@ -110,7 +112,7 @@ module CalendarHelper
       else
         colspan=7
       end
-      cal << %(<th colspan="#{colspan}" class="#{options[:month_name_class]}">#{Date::MONTHNAMES[options[:month]]}</th>)
+      cal << %(<th colspan="#{colspan}" class="#{options[:month_name_class]}">#{options[:calendar_title]}</th>)
       cal << %(<th colspan="2">#{options[:next_month_text]}</th>) if options[:next_month_text]
       cal << %(</tr>)
     end
