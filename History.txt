@@ -1,4 +1,8 @@
-=== 2.2.3 / 2010-05-21
+=== 0.2.4 / 2010-05-21
+
+* Calendar Title can be customized [Benjamin Lieb]
+
+=== 0.2.3 / 2010-05-21
 
 * Don't crash if time zone is nil
 * Upgrade to latest Hoe
