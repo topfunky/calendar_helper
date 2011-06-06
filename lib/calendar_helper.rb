@@ -21,9 +21,8 @@ module CalendarHelper
   #   :day_name_class    => "dayName"                           # The class is for the names of the weekdays, at the top.
   #   :day_class         => "day"                               # The class for the individual day number cells.
   #                                                               This may or may not be used if you specify a block (see below).
-  #   :abbrev            => (0..2)                              # This option specifies how the day names should be abbreviated.
-  #                                                               Use (0..2) for the first three letters, (0..0) for the first, and
-  #                                                               (0..-1) for the entire name.
+  #   :abbrev            => true                                # This option specifies whether day names should be displayed abbrevidated (true)
+  #                                                               or in full (false)
   #   :first_day_of_week => 0                                   # Renders calendar starting on Sunday. Use 1 for Monday, and so on.
   #   :accessible        => true                                # Turns on accessibility mode. This suffixes dates within the
   #                                                             # calendar that are outside the range defined in the <caption> with 
@@ -37,7 +36,7 @@ module CalendarHelper
   #   :previous_month_text   => nil                             # Displayed left of the month name if set
   #   :next_month_text   => nil                                 # Displayed right of the month name if set
   #   :month_header      => false                               # If you use false, the current month header will disappear.
-  #   :calendar_title    => Date::MONTHNAMES[options[:month]]   # Pass in a custom title for the calendar. Defaults to month name
+  #   :calendar_title    => month_names[options[:month]]        # Pass in a custom title for the calendar. Defaults to month name
   #
   # For more customization, you can pass a code block to this method, that will get one argument, a Date object,
   # and return a values for the individual table cells. The block can return an array, [cell_text, cell_attrs],
@@ -71,6 +70,8 @@ module CalendarHelper
     raise(ArgumentError, "No month given") unless options.has_key?(:month)
 
     block                        ||= Proc.new {|d| nil}
+    
+    month_names = (I18n.t("date.month_names").include?("missing")) ? Date::MONTHNAMES.dup : I18n.t("date.month_names")
 
     defaults = {
       :table_class         => 'calendar',
@@ -78,14 +79,14 @@ module CalendarHelper
       :other_month_class   => 'otherMonth',
       :day_name_class      => 'dayName',
       :day_class           => 'day',
-      :abbrev              => (0..2),
+      :abbrev              => true,
       :first_day_of_week   => 0,
       :accessible          => false,
       :show_today          => true,
       :previous_month_text => nil,
       :next_month_text     => nil,
       :month_header        => true,
-      :calendar_title      => Date::MONTHNAMES[options[:month]]
+      :calendar_title      => month_names[options[:month]]
     }
     options = defaults.merge options
 
@@ -95,9 +96,11 @@ module CalendarHelper
     first_weekday = first_day_of_week(options[:first_day_of_week])
     last_weekday = last_day_of_week(options[:first_day_of_week])
     
-    day_names = Date::DAYNAMES.dup
+    day_names = (I18n.t("date.day_names").include?("missing")) ? Date::DAYNAMES.dup : I18n.t("date.day_names")
+    abbr_day_names = (I18n.t("date.abbr_day_names").include?("missing")) ? Date::ABBR_DAYNAMES.dup : I18n.t("date.abbr_day_names")
     first_weekday.times do
       day_names.push(day_names.shift)
+      abbr_day_names.push(abbr_day_names.shift)
     end
 
     # TODO Use some kind of builder instead of straight HTML
@@ -119,11 +122,11 @@ module CalendarHelper
     
     cal << %(<tr class="#{options[:day_name_class]}">)
     
-    day_names.each do |d|
-      unless d[options[:abbrev]].eql? d
-        cal << "<th scope='col'><abbr title='#{d}'>#{d[options[:abbrev]]}</abbr></th>"
+    day_names.each_with_index do |day_name, index|
+      if options[:abbrev]
+        cal << "<th scope='col'><abbr title='#{day_name}'>#{abbr_day_names[index]}</abbr></th>"
       else
-        cal << "<th scope='col'>#{d[options[:abbrev]]}</th>"
+        cal << "<th scope='col'>#{day_name}</th>"
       end
     end
     cal << "</tr></thead><tbody><tr>"
@@ -131,7 +134,7 @@ module CalendarHelper
       cal << %(<td class="#{options[:other_month_class]})
       cal << " weekendDay" if weekend?(d)
       if options[:accessible]
-        cal << %(">#{d.day}<span class="hidden"> #{Date::MONTHNAMES[d.month]}</span></td>)
+        cal << %(">#{d.day}<span class="hidden"> #{month_names[d.month]}</span></td>)
       else
         cal << %(">#{d.day}</td>)
       end
@@ -152,7 +155,7 @@ module CalendarHelper
       cal << %(<td class="#{options[:other_month_class]})
       cal << " weekendDay" if weekend?(d)
       if options[:accessible]
-        cal << %(">#{d.day}<span class='hidden'> #{Date::MONTHNAMES[d.mon]}</span></td>)
+        cal << %(">#{d.day}<span class='hidden'> #{month_names[d.mon]}</span></td>)
       else
         cal << %(">#{d.day}</td>)        
       end
