@@ -100,6 +100,17 @@ class CalendarHelperTest < Test::Unit::TestCase
     assert_match %r{<thead><tr>.*</tr><tr.*</tr></thead>}, html
   end
 
+  def test_table_summary_defaults_to_calendar_period
+    html = calendar_with_defaults(:year => 1967, :month => 4)
+    assert_match %r{<table [^>]*summary="Calendar for April 1967"}, html
+  end
+
+  def test_custom_summary_attribute
+    html = calendar_with_defaults(:summary => 'TEST SUMMARY')
+    assert_match %r{<table [^>]*summary="TEST SUMMARY">}, html
+  end
+
+
   private
 
   def assert_correct_css_class_for_key(css_class, key)
