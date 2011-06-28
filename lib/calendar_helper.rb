@@ -9,13 +9,14 @@ module CalendarHelper
   # calendar (which can then be customized using CSS) for a given month and year.
   # However, this may be customized in a variety of ways -- changing the default CSS
   # classes, generating the individual day entries yourself, and so on.
-  # 
+  #
   # The following options are required:
   #  :year  # The  year number to show the calendar for.
   #  :month # The month number to show the calendar for.
-  # 
+  #
   # The following are optional, available for customizing the default behaviour:
   #   :table_class       => "calendar"                          # The class for the <table> tag.
+  #   :summary           => "Calendar for August 2008"          # The summary attribute for the <table> tag.  Required for 508 compliance.
   #   :month_name_class  => "monthName"                         # The class for the name of the month, at the top of the table.
   #   :other_month_class => "otherMonth"                        # Not implemented yet.
   #   :day_name_class    => "dayName"                           # The class is for the names of the weekdays, at the top.
@@ -26,13 +27,13 @@ module CalendarHelper
   #                                                               (0..-1) for the entire name.
   #   :first_day_of_week => 0                                   # Renders calendar starting on Sunday. Use 1 for Monday, and so on.
   #   :accessible        => true                                # Turns on accessibility mode. This suffixes dates within the
-  #                                                             # calendar that are outside the range defined in the <caption> with 
+  #                                                             # calendar that are outside the range defined in the <caption> with
   #                                                             # <span class="hidden"> MonthName</span>
   #                                                             # Defaults to false.
-  #                                                             # You'll need to define an appropriate style in order to make this disappear. 
+  #                                                             # You'll need to define an appropriate style in order to make this disappear.
   #                                                             # Choose your own method of hiding content appropriately.
   #
-  #   :show_today        => false                               # Highlights today on the calendar using the CSS class 'today'. 
+  #   :show_today        => false                               # Highlights today on the calendar using the CSS class 'today'.
   #                                                             # Defaults to true.
   #   :previous_month_text   => nil                             # Displayed left of the month name if set
   #   :next_month_text   => nil                                 # Displayed right of the month name if set
@@ -45,7 +46,7 @@ module CalendarHelper
   # (this can be used to change the <td>'s class for customization with CSS).
   # This block can also return the cell_text only, in which case the <td>'s class defaults to the value given in
   # +:day_class+. If the block returns nil, the default options are used.
-  # 
+  #
   # Example usage:
   #   calendar(:year => 2005, :month => 6) # This generates the simplest possible calendar.
   #   calendar({:year => 2005, :month => 6, :table_class => "calendar_helper"}) # This generates a calendar, as
@@ -62,10 +63,10 @@ module CalendarHelper
   #     end
   #   end
   #
-  # An additional 'weekend' class is applied to weekend days. 
+  # An additional 'weekend' class is applied to weekend days.
   #
   # For consistency with the themes provided in the calendar_styles generator, use "specialDay" as the CSS class for marked days.
-  # 
+  #
   def calendar(options = {}, &block)
     raise(ArgumentError, "No year given")  unless options.has_key?(:year)
     raise(ArgumentError, "No month given") unless options.has_key?(:month)
@@ -85,7 +86,8 @@ module CalendarHelper
       :previous_month_text => nil,
       :next_month_text     => nil,
       :month_header        => true,
-      :calendar_title      => Date::MONTHNAMES[options[:month]]
+      :calendar_title      => Date::MONTHNAMES[options[:month]],
+      :summary             => "Calendar for #{Date::MONTHNAMES[options[:month]]} #{options[:year]}"
     }
     options = defaults.merge options
 
@@ -94,16 +96,16 @@ module CalendarHelper
 
     first_weekday = first_day_of_week(options[:first_day_of_week])
     last_weekday = last_day_of_week(options[:first_day_of_week])
-    
+
     day_names = Date::DAYNAMES.dup
     first_weekday.times do
       day_names.push(day_names.shift)
     end
 
     # TODO Use some kind of builder instead of straight HTML
-    cal = %(<table class="#{options[:table_class]}" border="0" cellspacing="0" cellpadding="0">)
+    cal = %(<table class="#{options[:table_class]}" border="0" cellspacing="0" cellpadding="0" summary="#{options[:summary]}">)
     cal << %(<thead>)
-    
+
     if (options[:month_header])
       cal << %(<tr>)
       if options[:previous_month_text] or options[:next_month_text]
@@ -116,9 +118,9 @@ module CalendarHelper
       cal << %(<th colspan="2">#{options[:next_month_text]}</th>) if options[:next_month_text]
       cal << %(</tr>)
     end
-    
+
     cal << %(<tr class="#{options[:day_name_class]}">)
-    
+
     day_names.each do |d|
       unless d[options[:abbrev]].eql? d
         cal << "<th scope='col'><abbr title='#{d}'>#{d[options[:abbrev]]}</abbr></th>"
@@ -154,18 +156,18 @@ module CalendarHelper
       if options[:accessible]
         cal << %(">#{d.day}<span class='hidden'> #{Date::MONTHNAMES[d.mon]}</span></td>)
       else
-        cal << %(">#{d.day}</td>)        
+        cal << %(">#{d.day}</td>)
       end
     end unless last.wday == last_weekday
     cal << "</tr></tbody></table>"
   end
-  
+
   private
-  
+
   def first_day_of_week(day)
     day
   end
-  
+
   def last_day_of_week(day)
     if day > 0
       day - 1
@@ -173,7 +175,7 @@ module CalendarHelper
       6
     end
   end
-  
+
   def days_between(first, second)
     if first > second
       second + (7 - first)
@@ -181,14 +183,14 @@ module CalendarHelper
       second - first
     end
   end
-  
+
   def beginning_of_week(date, start = 1)
     days_to_beg = days_between(start, date.wday)
     date - days_to_beg
   end
-  
+
   def weekend?(date)
     [0, 6].include?(date.wday)
   end
-  
+
 end
