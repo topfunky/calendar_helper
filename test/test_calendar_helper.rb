@@ -68,7 +68,7 @@ class CalendarHelperTest < Test::Unit::TestCase
 
   def test_block
     # Even days are special
-    assert_match %r{class="special_day">2<}, calendar(:year => 2006, :month => 8) { |d|
+    assert_match %r{class="special_day"[^>]*>2<}, calendar(:year => 2006, :month => 8) { |d|
       if d.mday % 2 == 0
         [d.mday, {:class => 'special_day'}]
       end
@@ -128,6 +128,7 @@ class CalendarHelperTest < Test::Unit::TestCase
   def test_each_td_is_associated_with_appriopriate_th
     html = calendar_with_defaults(:year => 2011, :month => 8)
     assert_match %r{<td [^>]*headers=\"calendar-2011-08-sun\"[^>]+>31</td>}, html
+    assert_match %r{<td [^>]*headers=\"calendar-2011-08-mon\"[^>]+>1</td>}, html
   end
 
 
