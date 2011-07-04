@@ -129,9 +129,7 @@ module CalendarHelper
     cal << %(<tr class="#{options[:day_name_class]}">)
 
     day_names.each do |d|
-      th_id = "#{options[:table_id]}-#{d[options[:abbrev]].downcase}"
-
-      cal << %(<th id="#{th_id}" scope='col'>)
+      cal << %(<th id="#{th_id(d, options[:table_id])}" scope='col'>)
       cal << %(<abbr title='#{d}'>) unless d[options[:abbrev]].eql? d
       cal << %(#{d[options[:abbrev]]}</th>)
     end
@@ -142,7 +140,7 @@ module CalendarHelper
       cal << %(<td)
       cal << %( class="#{options[:other_month_class]})
       cal << " weekendDay" if weekend?(d)
-      cal << %( headers="#{options[:table_id]}-#{Date::DAYNAMES[d.wday][options[:abbrev]].downcase}")
+      cal << %( headers="#{th_id(d, options[:table_id])}")
       cal << %(">#{d.day})
       if options[:accessible]
         cal << %(<span class="hidden"> #{Date::MONTHNAMES[d.month]}</span>)
@@ -200,8 +198,14 @@ module CalendarHelper
     date - days_to_beg
   end
 
-  def th_id(calendar_id)
-
+  # Calculates id for th element.
+  #   derived from calendar_id and dow.
+  #
+  # Params:
+  #   `day` can be either Date or DOW('Sunday', 'Monday')
+  def th_id(day, calendar_id)
+    return th_id(Date::DAYNAMES[day.wday], calendar_id) if day.is_a?(Date)
+    "#{calendar_id}-#{day[0..2].downcase}"
   end
 
   def weekend?(date)
