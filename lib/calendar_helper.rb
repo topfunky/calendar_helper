@@ -136,17 +136,11 @@ module CalendarHelper
 
     cal << "</tr></thead><tbody><tr>"
 
+    # previous month
     beginning_of_week(first, first_weekday).upto(first - 1) do |d|
-      cal << %(<td)
-      cal << %( headers="#{th_id(d, options[:table_id])}")
-      cal << %( class="#{options[:other_month_class]})
-      cal << " weekendDay" if weekend?(d)
-      cal << %(">#{d.day})
-      if options[:accessible]
-        cal << %(<span class="hidden"> #{Date::MONTHNAMES[d.month]}</span>)
-      end
-      cal << %(</td>)
+      cal << generate_other_month_cell(d, options)
     end unless first.wday == first_weekday
+
     first.upto(last) do |cur|
       cell_text, cell_attrs = block.call(cur)
       cell_text  ||= cur.mday
@@ -160,17 +154,12 @@ module CalendarHelper
       cal << generate_cell(cell_text, cell_attrs)
       cal << "</tr><tr>" if cur.wday == last_weekday
     end
+
+    # next month
     (last + 1).upto(beginning_of_week(last + 7, first_weekday) - 1)  do |d|
-      cal << %(<td)
-      cal << %( headers="#{th_id(d, options[:table_id])}")
-      cal << %( class="#{options[:other_month_class]})
-      cal << " weekendDay" if weekend?(d)
-      cal << %(">#{d.day})
-      if options[:accessible]
-        cal << %(<span class="hidden"> #{Date::MONTHNAMES[d.month]}</span>)
-      end
-      cal << %(</td>)
+      cal << generate_other_month_cell(d, options)
     end unless last.wday == last_weekday
+
     cal << "</tr></tbody></table>"
   end
 
@@ -203,7 +192,21 @@ module CalendarHelper
 
   def generate_cell(cell_text, cell_attrs)
     cell_attrs = cell_attrs.map {|k, v| %(#{k}="#{v}") }.join(" ")
-    cal << "<td #{cell_attrs}>#{cell_text}</td>"
+    "<td #{cell_attrs}>#{cell_text}</td>"
+  end
+
+  def generate_other_month_cell(date, options)
+    cell_attrs = {}
+    cell_attrs[:headers] = th_id(date, options[:table_id])
+    cell_attrs[:class] = options[:other_month_class]
+    cell_attrs[:class] += " weekendDay" if weekend?(date)
+
+    cell_text = date.day
+    if options[:accessible]
+      cell_text += %(<span class="hidden"> #{Date::MONTHNAMES[date.month]}</span>)
+    end
+
+    generate_cell(date.day, cell_attrs)
   end
 
   # Calculates id for th element.
