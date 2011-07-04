@@ -125,6 +125,11 @@ class CalendarHelperTest < Test::Unit::TestCase
     assert_match %r{<tr class=\"dayName\"><th [^>]*id=\"calendar-1967-04-sun\"}, html
   end
 
+  def test_each_td_is_associated_with_appriopriate_th
+    html = calendar_with_defaults(:year => 2011, :month => 8)
+    assert_match %r{<td [^>]*headers=\"calendar-2011-08-sun\"[^>]+>31</td>}, html
+  end
+
 
   private
 

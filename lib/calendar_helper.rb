@@ -68,6 +68,11 @@ module CalendarHelper
   #
   # For consistency with the themes provided in the calendar_styles generator, use "specialDay" as the CSS class for marked days.
   #
+  # Accessibility & 508 Compliance:
+  #   The table tag has a summary attribute (overridable).
+  #   Each th has an id.
+  #   Each td has a headers attribute, containing the element id of the appropriate th.
+  #
   def calendar(options = {}, &block)
     raise(ArgumentError, "No year given")  unless options.has_key?(:year)
     raise(ArgumentError, "No month given") unless options.has_key?(:month)
@@ -134,13 +139,15 @@ module CalendarHelper
     cal << "</tr></thead><tbody><tr>"
 
     beginning_of_week(first, first_weekday).upto(first - 1) do |d|
-      cal << %(<td class="#{options[:other_month_class]})
+      cal << %(<td)
+      cal << %( class="#{options[:other_month_class]})
       cal << " weekendDay" if weekend?(d)
+      cal << %( headers="#{options[:table_id]}-#{Date::DAYNAMES[d.wday][options[:abbrev]].downcase}")
+      cal << %(">#{d.day})
       if options[:accessible]
-        cal << %(">#{d.day}<span class="hidden"> #{Date::MONTHNAMES[d.month]}</span></td>)
-      else
-        cal << %(">#{d.day}</td>)
+        cal << %(<span class="hidden"> #{Date::MONTHNAMES[d.month]}</span>)
       end
+      cal << %(</td>)
     end unless first.wday == first_weekday
     first.upto(last) do |cur|
       cell_text, cell_attrs = block.call(cur)
@@ -191,6 +198,10 @@ module CalendarHelper
   def beginning_of_week(date, start = 1)
     days_to_beg = days_between(start, date.wday)
     date - days_to_beg
+  end
+
+  def th_id(calendar_id)
+
   end
 
   def weekend?(date)
