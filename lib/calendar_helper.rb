@@ -126,13 +126,13 @@ module CalendarHelper
     day_names.each do |d|
       th_id = "#{options[:table_id]}-#{d[options[:abbrev]].downcase}"
 
-      unless d[options[:abbrev]].eql? d
-        cal << %(<th id="#{th_id}" scope='col'><abbr title='#{d}'>#{d[options[:abbrev]]}</abbr></th>)
-      else
-        cal << %(<th id="#{th_id}" scope='col'>#{d[options[:abbrev]]}</th>)
-      end
+      cal << %(<th id="#{th_id}" scope='col'>)
+      cal << %(<abbr title='#{d}'>) unless d[options[:abbrev]].eql? d
+      cal << %(#{d[options[:abbrev]]}</th>)
     end
+
     cal << "</tr></thead><tbody><tr>"
+
     beginning_of_week(first, first_weekday).upto(first - 1) do |d|
       cal << %(<td class="#{options[:other_month_class]})
       cal << " weekendDay" if weekend?(d)
