@@ -42,11 +42,11 @@ class CalendarHelperTest < Test::Unit::TestCase
   end
 
   def test_default_css_classes
-    # :other_month_class is not implemented yet
     { :table_class => "calendar",
       :month_name_class => "monthName",
       :day_name_class => "dayName",
-      :day_class => "day"
+      :day_class => "day",
+      :other_month_class => "otherMonth"
     }.each do |key, value|
       assert_correct_css_class_for_default value
     end
@@ -54,8 +54,7 @@ class CalendarHelperTest < Test::Unit::TestCase
 
   def test_custom_css_classes
     # Uses the key name as the CSS class name
-    # :other_month_class is not implemented yet
-    [:table_class, :month_name_class, :day_name_class, :day_class].each do |key|
+    [:table_class, :month_name_class, :day_name_class, :day_class, :other_month_class].each do |key|
       assert_correct_css_class_for_key key.to_s, key
     end
   end
