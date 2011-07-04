@@ -156,8 +156,8 @@ module CalendarHelper
       cell_attrs[:class] += " weekendDay" if [0, 6].include?(cur.wday)
       today = (Time.respond_to?(:zone) && !(zone = Time.zone).nil? ? zone.now.to_date : Date.today)
       cell_attrs[:class] += " today" if (cur == today) and options[:show_today]
-      cell_attrs = cell_attrs.map {|k, v| %(#{k}="#{v}") }.join(" ")
-      cal << "<td #{cell_attrs}>#{cell_text}</td>"
+
+      cal << generate_cell(cell_text, cell_attrs)
       cal << "</tr><tr>" if cur.wday == last_weekday
     end
     (last + 1).upto(beginning_of_week(last + 7, first_weekday) - 1)  do |d|
@@ -199,6 +199,11 @@ module CalendarHelper
   def beginning_of_week(date, start = 1)
     days_to_beg = days_between(start, date.wday)
     date - days_to_beg
+  end
+
+  def generate_cell(cell_text, cell_attrs)
+    cell_attrs = cell_attrs.map {|k, v| %(#{k}="#{v}") }.join(" ")
+    cal << "<td #{cell_attrs}>#{cell_text}</td>"
   end
 
   # Calculates id for th element.
