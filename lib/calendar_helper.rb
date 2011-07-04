@@ -15,6 +15,7 @@ module CalendarHelper
   #  :month # The month number to show the calendar for.
   #
   # The following are optional, available for customizing the default behaviour:
+  #   :table_id          => "calendar-2008-08"                  # The id for the <table> tag.
   #   :table_class       => "calendar"                          # The class for the <table> tag.
   #   :summary           => "Calendar for August 2008"          # The summary attribute for the <table> tag.  Required for 508 compliance.
   #   :month_name_class  => "monthName"                         # The class for the name of the month, at the top of the table.
@@ -74,6 +75,7 @@ module CalendarHelper
     block                        ||= Proc.new {|d| nil}
 
     defaults = {
+      :table_id            => "calendar-#{options[:year]}-#{"0%d" % options[:month]}",
       :table_class         => 'calendar',
       :month_name_class    => 'monthName',
       :other_month_class   => 'otherMonth',
@@ -103,7 +105,7 @@ module CalendarHelper
     end
 
     # TODO Use some kind of builder instead of straight HTML
-    cal = %(<table class="#{options[:table_class]}" border="0" cellspacing="0" cellpadding="0" summary="#{options[:summary]}">)
+    cal = %(<table id="#{options[:table_id]}" class="#{options[:table_class]}" border="0" cellspacing="0" cellpadding="0" summary="#{options[:summary]}">)
     cal << %(<thead>)
 
     if (options[:month_header])

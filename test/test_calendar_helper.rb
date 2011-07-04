@@ -110,6 +110,16 @@ class CalendarHelperTest < Test::Unit::TestCase
     assert_match %r{<table [^>]*summary="TEST SUMMARY">}, html
   end
 
+  def test_table_id_defaults_calendar_year_month
+    html = calendar_with_defaults(:year => 1967, :month => 4)
+    assert_match %r{<table [^>]*id="calendar-1967-04"}, html
+  end
+
+  def test_custom_table_id
+    html = calendar_with_defaults(:year => 1967, :month => 4, :table_id => 'test-the-id')
+    assert_match %r{<table [^>]*id="test-the-id"}, html
+  end
+
 
   private
 
