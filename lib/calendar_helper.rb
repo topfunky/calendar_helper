@@ -124,10 +124,12 @@ module CalendarHelper
     cal << %(<tr class="#{options[:day_name_class]}">)
 
     day_names.each do |d|
+      th_id = "#{options[:table_id]}-#{d[options[:abbrev]].downcase}"
+
       unless d[options[:abbrev]].eql? d
-        cal << "<th scope='col'><abbr title='#{d}'>#{d[options[:abbrev]]}</abbr></th>"
+        cal << %(<th id="#{th_id}" scope='col'><abbr title='#{d}'>#{d[options[:abbrev]]}</abbr></th>)
       else
-        cal << "<th scope='col'>#{d[options[:abbrev]]}</th>"
+        cal << %(<th id="#{th_id}" scope='col'>#{d[options[:abbrev]]}</th>)
       end
     end
     cal << "</tr></thead><tbody><tr>"
