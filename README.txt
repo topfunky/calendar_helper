@@ -41,6 +41,14 @@ In Sinatra, include the CalendarHelper module in your helpers:
     include CalendarHelper
   end
 
+
+== Accessibility & 508 Compliance:
+
+  The table tag has a summary attribute (overridable).
+  Each th has an id.
+  Each td as a headers attribute, containing the element id of the appropriate th.
+
+
 == AUTHORS:
 
 Jeremy Voorhis -- http://jvoorhis.com

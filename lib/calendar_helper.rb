@@ -15,6 +15,7 @@ module CalendarHelper
   #  :month # The month number to show the calendar for.
   #
   # The following are optional, available for customizing the default behaviour:
+  #   :table_id          => "calendar-2008-08"                  # The id for the <table> tag.
   #   :table_class       => "calendar"                          # The class for the <table> tag.
   #   :summary           => "Calendar for August 2008"          # The summary attribute for the <table> tag.  Required for 508 compliance.
   #   :month_name_class  => "monthName"                         # The class for the name of the month, at the top of the table.
@@ -67,6 +68,11 @@ module CalendarHelper
   #
   # For consistency with the themes provided in the calendar_styles generator, use "specialDay" as the CSS class for marked days.
   #
+  # Accessibility & 508 Compliance:
+  #   The table tag has a summary attribute (overridable).
+  #   Each th has an id.
+  #   Each td has a headers attribute, containing the element id of the appropriate th.
+  #
   def calendar(options = {}, &block)
     raise(ArgumentError, "No year given")  unless options.has_key?(:year)
     raise(ArgumentError, "No month given") unless options.has_key?(:month)
@@ -74,6 +80,7 @@ module CalendarHelper
     block                        ||= Proc.new {|d| nil}
 
     defaults = {
+      :table_id            => "calendar-#{options[:year]}-#{"0%d" % options[:month]}",
       :table_class         => 'calendar',
       :month_name_class    => 'monthName',
       :other_month_class   => 'otherMonth',
@@ -103,7 +110,7 @@ module CalendarHelper
     end
 
     # TODO Use some kind of builder instead of straight HTML
-    cal = %(<table class="#{options[:table_class]}" border="0" cellspacing="0" cellpadding="0" summary="#{options[:summary]}">)
+    cal = %(<table id="#{options[:table_id]}" class="#{options[:table_class]}" border="0" cellspacing="0" cellpadding="0" summary="#{options[:summary]}">)
     cal << %(<thead>)
 
     if (options[:month_header])
@@ -122,43 +129,37 @@ module CalendarHelper
     cal << %(<tr class="#{options[:day_name_class]}">)
 
     day_names.each do |d|
-      unless d[options[:abbrev]].eql? d
-        cal << "<th scope='col'><abbr title='#{d}'>#{d[options[:abbrev]]}</abbr></th>"
-      else
-        cal << "<th scope='col'>#{d[options[:abbrev]]}</th>"
-      end
+      cal << %(<th id="#{th_id(d, options[:table_id])}" scope='col'>)
+      cal << %(<abbr title='#{d}'>) unless d[options[:abbrev]].eql? d
+      cal << %(#{d[options[:abbrev]]}</th>)
     end
+
     cal << "</tr></thead><tbody><tr>"
+
+    # previous month
     beginning_of_week(first, first_weekday).upto(first - 1) do |d|
-      cal << %(<td class="#{options[:other_month_class]})
-      cal << " weekendDay" if weekend?(d)
-      if options[:accessible]
-        cal << %(">#{d.day}<span class="hidden"> #{Date::MONTHNAMES[d.month]}</span></td>)
-      else
-        cal << %(">#{d.day}</td>)
-      end
+      cal << generate_other_month_cell(d, options)
     end unless first.wday == first_weekday
+
     first.upto(last) do |cur|
       cell_text, cell_attrs = block.call(cur)
       cell_text  ||= cur.mday
       cell_attrs ||= {}
+      cell_attrs[:headers] = th_id(cur, options[:table_id])
       cell_attrs[:class] ||= options[:day_class]
       cell_attrs[:class] += " weekendDay" if [0, 6].include?(cur.wday)
       today = (Time.respond_to?(:zone) && !(zone = Time.zone).nil? ? zone.now.to_date : Date.today)
       cell_attrs[:class] += " today" if (cur == today) and options[:show_today]
-      cell_attrs = cell_attrs.map {|k, v| %(#{k}="#{v}") }.join(" ")
-      cal << "<td #{cell_attrs}>#{cell_text}</td>"
+
+      cal << generate_cell(cell_text, cell_attrs)
       cal << "</tr><tr>" if cur.wday == last_weekday
     end
+
+    # next month
     (last + 1).upto(beginning_of_week(last + 7, first_weekday) - 1)  do |d|
-      cal << %(<td class="#{options[:other_month_class]})
-      cal << " weekendDay" if weekend?(d)
-      if options[:accessible]
-        cal << %(">#{d.day}<span class='hidden'> #{Date::MONTHNAMES[d.mon]}</span></td>)
-      else
-        cal << %(">#{d.day}</td>)
-      end
+      cal << generate_other_month_cell(d, options)
     end unless last.wday == last_weekday
+
     cal << "</tr></tbody></table>"
   end
 
@@ -187,6 +188,35 @@ module CalendarHelper
   def beginning_of_week(date, start = 1)
     days_to_beg = days_between(start, date.wday)
     date - days_to_beg
+  end
+
+  def generate_cell(cell_text, cell_attrs)
+    cell_attrs = cell_attrs.map {|k, v| %(#{k}="#{v}") }.join(" ")
+    "<td #{cell_attrs}>#{cell_text}</td>"
+  end
+
+  def generate_other_month_cell(date, options)
+    cell_attrs = {}
+    cell_attrs[:headers] = th_id(date, options[:table_id])
+    cell_attrs[:class] = options[:other_month_class]
+    cell_attrs[:class] += " weekendDay" if weekend?(date)
+
+    cell_text = date.day
+    if options[:accessible]
+      cell_text += %(<span class="hidden"> #{Date::MONTHNAMES[date.month]}</span>)
+    end
+
+    generate_cell(date.day, cell_attrs)
+  end
+
+  # Calculates id for th element.
+  #   derived from calendar_id and dow.
+  #
+  # Params:
+  #   `day` can be either Date or DOW('Sunday', 'Monday')
+  def th_id(day, calendar_id)
+    return th_id(Date::DAYNAMES[day.wday], calendar_id) if day.is_a?(Date)
+    "#{calendar_id}-#{day[0..2].downcase}"
   end
 
   def weekend?(date)
