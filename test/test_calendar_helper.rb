@@ -60,9 +60,8 @@ class CalendarHelperTest < Test::Unit::TestCase
   end
 
   def test_abbrev
-    assert_match %r{>Mon<}, calendar_with_defaults(:abbrev => (0..2))
-    assert_match %r{>M<}, calendar_with_defaults(:abbrev => (0..0))
-    assert_match %r{>Monday<}, calendar_with_defaults(:abbrev => (0..-1))
+    assert_match %r{>Mon<}, calendar_with_defaults()
+    assert_match %r{>Monday<}, calendar_with_defaults(:abbrev => false)
   end
 
   def test_block
@@ -77,7 +76,7 @@ class CalendarHelperTest < Test::Unit::TestCase
   def test_first_day_of_week
     assert_match %r{<tr class="dayName">\s*<th [^>]*scope='col'><abbr title='Sunday'>Sun}, calendar_with_defaults
     # testing that if the abbrev and contracted version are the same, there should be no abbreviation.
-    assert_match %r{<tr class="dayName">\s*<th [^>]*scope='col'>Sunday}, calendar_with_defaults(:abbrev => (0..8))
+    assert_match %r{<tr class="dayName">\s*<th [^>]*scope='col'>Sunday}, calendar_with_defaults(:abbrev => false)
     assert_match %r{<tr class="dayName">\s*<th [^>]*scope='col'><abbr title='Monday'>Mon}, calendar_with_defaults(:first_day_of_week => 1)
   end
 
