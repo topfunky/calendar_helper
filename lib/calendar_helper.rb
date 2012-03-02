@@ -132,21 +132,13 @@ module CalendarHelper
     end
 
     cal << %(<tr class="#{options[:day_name_class]}">)
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> 9flats/master
     day_names.each_with_index do |day_name, index|
       cal << %(<th id="#{th_id(day_name, options[:table_id])}" scope='col'>)
       cal << (options[:abbrev] ? %(<abbr title='#{day_name}'>#{abbr_day_names[index]}</abbr>) : day_name)
       cal << %(</th>)
     end
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> 9flats/master
     cal << "</tr></thead><tbody><tr>"
 
     # previous month
