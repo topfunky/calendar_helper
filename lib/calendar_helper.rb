@@ -80,6 +80,8 @@ module CalendarHelper
     
     month_names = (!defined?(I18n) || I18n.t("date.month_names").include?("missing")) ? Date::MONTHNAMES.dup : I18n.t("date.month_names")
 
+    month_names = (!defined?(I18n) || I18n.t("date.month_names").include?("missing")) ? Date::MONTHNAMES.dup : I18n.t("date.month_names")
+
     defaults = {
       :table_id            => "calendar-#{options[:year]}-#{"0%d" % options[:month]}",
       :table_class         => 'calendar',
@@ -130,13 +132,21 @@ module CalendarHelper
     end
 
     cal << %(<tr class="#{options[:day_name_class]}">)
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 9flats/master
     day_names.each_with_index do |day_name, index|
       cal << %(<th id="#{th_id(day_name, options[:table_id])}" scope='col'>)
       cal << (options[:abbrev] ? %(<abbr title='#{day_name}'>#{abbr_day_names[index]}</abbr>) : day_name)
       cal << %(</th>)
     end
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 9flats/master
     cal << "</tr></thead><tbody><tr>"
 
     # previous month
@@ -227,3 +237,9 @@ module CalendarHelper
   end
 
 end
+
+class Railtie < Rails::Railtie
+  ActiveSupport.on_load(:action_view) do
+    include CalendarHelper
+  end
+end if defined? Rails::Railtie
