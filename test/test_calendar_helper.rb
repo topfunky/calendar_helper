@@ -82,7 +82,7 @@ class CalendarHelperTest < Test::Unit::TestCase
 
   def test_today_is_in_calendar
     todays_day = Date.today.day
-    assert_match %r{class="day.+today">#{todays_day}<}, calendar_for_this_month
+    assert_match %r{class="day.+today"[^>]*>#{todays_day}<}, calendar_for_this_month
   end
 
   def test_should_not_show_today
@@ -125,8 +125,8 @@ class CalendarHelperTest < Test::Unit::TestCase
 
   def test_each_td_is_associated_with_appriopriate_th
     html = calendar_with_defaults(:year => 2011, :month => 8)
-    assert_match %r{<td [^>]*headers=\"calendar-2011-08-sun\"[^>]+>31</td>}, html
-    assert_match %r{<td [^>]*headers=\"calendar-2011-08-mon\"[^>]+>1</td>}, html
+    assert_match %r{<td [^>]*headers=\"calendar-2011-08-sun\"[^>]*>31</td>}, html
+    assert_match %r{<td [^>]*headers=\"calendar-2011-08-mon\"[^>]*>1</td>}, html
   end
 
 
