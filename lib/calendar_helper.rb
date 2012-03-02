@@ -228,12 +228,6 @@ module CalendarHelper
   def weekend?(date)
     [0, 6].include?(date.wday)
   end
-
-  class Railtie < Rails::Railtie
-    ActiveSupport.on_load(:action_view) do
-      include CalendarHelper
-    end    
-  end if defined? Rails::Railtie
 end
 
 class Railtie < Rails::Railtie
