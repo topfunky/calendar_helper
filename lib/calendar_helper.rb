@@ -174,6 +174,7 @@ module CalendarHelper
     end unless last.wday == last_weekday
 
     cal << "</tr></tbody></table>"
+    cal.respond_to?(:html_safe) ? cal.html_safe : cal
   end
 
   private
@@ -236,6 +237,11 @@ module CalendarHelper
     [0, 6].include?(date.wday)
   end
 
+  class Railtie < Rails::Railtie
+    ActiveSupport.on_load(:action_view) do
+      include CalendarHelper
+    end    
+  end if defined? Rails::Railtie
 end
 
 class Railtie < Rails::Railtie
