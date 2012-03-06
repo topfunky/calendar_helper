@@ -2,3 +2,5 @@ test/output/
 tmp/*
 pkg/*
 Gemfile.lock
+/rdoc/
+*.sublime-*
