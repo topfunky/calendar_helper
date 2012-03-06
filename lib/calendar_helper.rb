@@ -79,6 +79,8 @@ module CalendarHelper
 
     block                        ||= Proc.new {|d| nil}
 
+    month_names = (!defined?(I18n) || I18n.t("date.month_names").include?("missing")) ? Date::MONTHNAMES.dup : I18n.t("date.month_names")
+
     defaults = {
       :table_id            => "calendar-#{options[:year]}-#{"0%d" % options[:month]}",
       :table_class         => 'calendar',
@@ -104,11 +106,11 @@ module CalendarHelper
     first_weekday = first_day_of_week(options[:first_day_of_week])
     last_weekday = last_day_of_week(options[:first_day_of_week])
 
-    day_names = (!defined?(I18n) || I18n.t("date.day_names").include?("missing")) ? Date::DAYNAMES.dup : I18n.t("date.day_names").dup
-    abbr_day_names = (!defined?(I18n) || I18n.t("date.abbr_day_names").include?("missing")) ? Date::ABBR_DAYNAMES.dup : I18n.t("date.abbr_day_names").dup
+    day_names = (!defined?(I18n) || I18n.t("date.day_names").include?("missing")) ? Date::DAYNAMES : I18n.t("date.day_names")
+    abbr_day_names = (!defined?(I18n) || I18n.t("date.abbr_day_names").include?("missing")) ? Date::ABBR_DAYNAMES : I18n.t("date.abbr_day_names")
+    week_days = (0..6).to_a
     first_weekday.times do
-      day_names.push(day_names.shift)
-      abbr_day_names.push(abbr_day_names.shift)
+      week_days.push(week_days.shift)
     end
 
     # TODO Use some kind of builder instead of straight HTML
@@ -130,9 +132,9 @@ module CalendarHelper
 
     cal << %(<tr class="#{options[:day_name_class]}">)
 
-    day_names.each_with_index do |day_name, index|
-      cal << %(<th id="#{th_id(day_name, options[:table_id])}" scope='col'>)
-      cal << (options[:abbrev] ? %(<abbr title='#{day_name}'>#{abbr_day_names[index]}</abbr>) : day_name)
+    week_days.each do |wday|
+      cal << %(<th id="#{th_id(Date::DAYNAMES[wday], options[:table_id])}" scope='col'>)
+      cal << (options[:abbrev] ? %(<abbr title='#{day_names[wday]}'>#{abbr_day_names[wday]}</abbr>) : day_names[wday])
       cal << %(</th>)
     end
 
