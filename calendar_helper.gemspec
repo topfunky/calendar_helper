@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.description = "A simple helper for creating an HTML calendar. The \"calendar\" method will be automatically available to your Rails view templates, or can be used with Sinatra or other webapps.\n\nThere is also a Rails generator that copies some stylesheets for use alone or alongside existing stylesheets."
   s.email = ["boss@topfunky.com"]
   s.extra_rdoc_files = ["History.txt", "Manifest.txt", "README.txt"]
-  s.files = ["History.txt", "MIT-LICENSE", "Manifest.txt", "README.txt", "Rakefile", "generators/calendar_styles/calendar_styles_generator.rb", "generators/calendar_styles/templates/blue/style.css", "generators/calendar_styles/templates/grey/style.css", "generators/calendar_styles/templates/red/style.css", "init.rb", "lib/calendar_helper.rb", "test/test_calendar_helper.rb", ".gemtest"]
+  s.files = ["History.txt", "MIT-LICENSE", "Manifest.txt", "README.txt", "Rakefile", "generators/calendar_styles/calendar_styles_generator.rb", "generators/calendar_styles/templates/blue/style.css", "generators/calendar_styles/templates/grey/style.css", "generators/calendar_styles/templates/red/style.css", "init.rb", "lib/calendar_helper.rb", "test/test_calendar_helper.rb"]
   s.rdoc_options = ["--main", "README.txt"]
   s.require_paths = ["lib"]
   s.rubyforge_project = "calendar_helper"
