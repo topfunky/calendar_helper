@@ -1,4 +1,0 @@
-env :development, :test do
-  gem 'hoe'
-  gem 'flexmock'
-end

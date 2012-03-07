@@ -2,9 +2,20 @@
 
 == DESCRIPTION:
 
-A simple helper for creating an HTML calendar. The "calendar" method will be automatically available to your Rails view templates, or can be used with Sinatra or other webapps.
+A simple helper for creating an HTML calendar. The "calendar" method will be
+automatically available to your Rails view templates, or can be used with
+Sinatra or other webapps.
 
-There is also a Rails generator that copies some stylesheets for use alone or alongside existing stylesheets.
+Some example stylesheets are provided via the Rails asset pipeline. Add to
+your main stylesheet with one of the following:
+
+  /*
+   *= require 'calendar_styles/grey'
+   *   OR
+   *= require 'calendar_styles/red'
+   *   OR
+   *= require 'calendar_styles/blue'
+   */
 
 == SYNOPSIS:
 
@@ -44,9 +55,9 @@ In Sinatra, include the CalendarHelper module in your helpers:
 
 == Accessibility & 508 Compliance:
 
-  The table tag has a summary attribute (overridable).
-  Each th has an id.
-  Each td as a headers attribute, containing the element id of the appropriate th.
+* The table tag has a summary attribute (overridable).
+* Each th has an id.
+* Each td as a headers attribute, containing the element id of the appropriate th.
 
 
 == AUTHORS:
@@ -62,6 +73,7 @@ Test suite and conversion to a Rails plugin
 * Jarkko Laine http://jlaine.net/
 * Tom Armitage http://infovore.org
 * Bryan Larsen http://larsen.st
+* Eric Anderson http://saveyourcall.com
 
 == USAGE:
 
