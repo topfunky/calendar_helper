@@ -27,6 +27,8 @@ Gem::Specification.new do |s|
   s.test_files = ["test/test_calendar_helper.rb"]
 
   s.add_runtime_dependency 'open4'
+
+  s.add_development_dependency 'rake'
   s.add_development_dependency 'rdoc', ">= 3.10"
   s.add_development_dependency 'flexmock'
 end
