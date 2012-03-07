@@ -17,11 +17,11 @@ Gem::Specification.new do |s|
     or alongside existing stylesheets.
   DESCRIPTION
 
-  s.files = ["MIT-LICENSE", "README.rdoc", 'init.rb'] +
+  s.files = ["MIT-LICENSE", "README.rdoc", "History.rdoc", 'init.rb'] +
             Dir['lib/**/*.rb'] + Dir['generators/**/*']
 
   s.rdoc_options = ["--main", "README.rdoc"]
-  s.extra_rdoc_files = ["README.rdoc"]
+  s.extra_rdoc_files = ["README.rdoc", "History.rdoc"]
 
   s.require_paths = ["lib"]  
   s.test_files = ["test/test_calendar_helper.rb"]
