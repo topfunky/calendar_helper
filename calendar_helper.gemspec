@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   DESCRIPTION
 
   s.files = ["MIT-LICENSE", "README.rdoc", "History.rdoc", 'init.rb'] +
-            Dir['lib/**/*.rb'] + Dir['generators/**/*']
+            Dir['lib/**/*.rb'] + Dir['app/**/*']
 
   s.rdoc_options = ["--main", "README.rdoc"]
   s.extra_rdoc_files = ["README.rdoc", "History.rdoc"]
