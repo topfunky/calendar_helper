@@ -77,8 +77,6 @@ module CalendarHelper
     raise(ArgumentError, "No month given") unless options.has_key?(:month)
 
     block                        ||= Proc.new {|d| nil}
-    
-    month_names = (!defined?(I18n) || I18n.t("date.month_names").include?("missing")) ? Date::MONTHNAMES.dup : I18n.t("date.month_names")
 
     month_names = (!defined?(I18n) || I18n.t("date.month_names").include?("missing")) ? Date::MONTHNAMES.dup : I18n.t("date.month_names")
 
