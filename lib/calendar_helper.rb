@@ -80,8 +80,6 @@ module CalendarHelper
     
     month_names = (!defined?(I18n) || I18n.t("date.month_names").include?("missing")) ? Date::MONTHNAMES.dup : I18n.t("date.month_names")
 
-    month_names = (!defined?(I18n) || I18n.t("date.month_names").include?("missing")) ? Date::MONTHNAMES.dup : I18n.t("date.month_names")
-
     defaults = {
       :table_id            => "calendar-#{options[:year]}-#{"0%d" % options[:month]}",
       :table_class         => 'calendar',
