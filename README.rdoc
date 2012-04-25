@@ -1,5 +1,7 @@
 = CalendarHelper
 
+{<img src="https://secure.travis-ci.org/topfunky/calendar_helper.png?branch=master" alt="Build Status" />}[http://travis-ci.org/topfunky/calendar_helper]
+
 == DESCRIPTION:
 
 A simple helper for creating an HTML calendar. The "calendar" method will be
