@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require 'date'
 
 # CalendarHelper allows you to draw a databound calendar with fine-grained CSS formatting

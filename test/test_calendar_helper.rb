@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require 'rubygems'
 require 'test/unit'
 require 'fileutils'
@@ -127,6 +128,30 @@ class CalendarHelperTest < Test::Unit::TestCase
     html = calendar_with_defaults(:year => 2011, :month => 8)
     assert_match %r{<td [^>]*headers=\"calendar-2011-08-sun\"[^>]*>31</td>}, html
     assert_match %r{<td [^>]*headers=\"calendar-2011-08-mon\"[^>]*>1</td>}, html
+  end
+
+  def test_non_english_language
+    # mock I18n.t to simulate internationalized setting
+    CalendarHelper.const_set :I18n, Class.new {
+      def self.t(key)
+        if key == "date.day_names"
+          ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"]
+        elsif key == "date.abbr_day_names"
+          ["Ne", "Po", "Út", "St", "Čt", "Pá", "So"]
+        elsif key == "date.month_names"
+          ["", "Leden", "Únor", "Březen", "Duben", "Květen", "Červen", "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec"]
+        end
+      end
+    }
+
+    html = calendar_with_defaults(:year => 2012, :month => 4)
+
+    # unmock I18n.t again
+    CalendarHelper.send(:remove_const, :I18n)
+
+    # make sure all the labels are in english and don't use i18n abbreviation (Neděle)
+    assert_not_match %r(calendar-2012-04-ned), html
+    assert_equal 6, html.scan("calendar-2012-04-sun").size # 6 = 5 + header
   end
 
 
