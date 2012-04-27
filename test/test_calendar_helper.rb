@@ -150,7 +150,7 @@ class CalendarHelperTest < Test::Unit::TestCase
     CalendarHelper.send(:remove_const, :I18n)
 
     # make sure all the labels are in english and don't use i18n abbreviation (Neděle)
-    assert_not_match %r(calendar-2012-04-ned), html
+    assert_no_match %r(calendar-2012-04-ned), html
     assert_equal 6, html.scan("calendar-2012-04-sun").size # 6 = 5 + header
   end
 
