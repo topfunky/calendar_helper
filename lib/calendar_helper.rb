@@ -20,7 +20,7 @@ module CalendarHelper
   #   :table_class       => "calendar"                          # The class for the <table> tag.
   #   :summary           => "Calendar for August 2008"          # The summary attribute for the <table> tag.  Required for 508 compliance.
   #   :month_name_class  => "monthName"                         # The class for the name of the month, at the top of the table.
-  #   :other_month_class => "otherMonth"                        # Not implemented yet.
+  #   :other_month_class => "otherMonth"                        # The class for individual day cells for previous and next months.
   #   :day_name_class    => "dayName"                           # The class is for the names of the weekdays, at the top.
   #   :day_class         => "day"                               # The class for the individual day number cells.
   #                                                               This may or may not be used if you specify a block (see below).
