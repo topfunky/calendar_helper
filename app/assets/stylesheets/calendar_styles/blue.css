@@ -1,10 +1,10 @@
 /*
   A blue based theme, inspired by Blinksale and their ColorBurn widget. http://firewheeldesign.com
-  
+
   AUTHOR: Geoffrey Grosenbach http://nubyonrails.com
-  
-  Colors: 
-    Light Blue: bbccff 
+
+  Colors:
+    Light Blue: bbccff
     White: eeddee
     Turq: 003355
     Cream: ffffdd
@@ -63,4 +63,7 @@
 }
 .today{
 	background-color: #4682b4;
+}
+.weekNumber {
+  background-color: #dedede;
 }

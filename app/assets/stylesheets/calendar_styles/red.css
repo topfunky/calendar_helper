@@ -1,6 +1,6 @@
 /*
   A red, white, and grey theme.
-  
+
   AUTHOR: Geoffrey Grosenbach http://nubyonrails.com
 */
 
@@ -57,4 +57,7 @@
 .today {
 	background-color: #1e90ff;
 	color: white;
+}
+.weekNumber {
+  background-color: #BADA55;
 }
