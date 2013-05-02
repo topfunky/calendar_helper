@@ -147,10 +147,10 @@ module CalendarHelper
     cal << "</tr></thead><tbody><tr>"
 
     # previous month
-    begin_date = beginning_of_week(first, first_weekday)
-    cal << %(<td class="#{options[:week_number_class]}">#{week_number(begin_date, options[:week_number_format])}</td>) if options[:show_week_numbers]
+    begin_of_week = beginning_of_week(first, first_weekday)
+    cal << %(<td class="#{options[:week_number_class]}">#{week_number(begin_of_week, options[:week_number_format])}</td>) if options[:show_week_numbers]
 
-    begin_date.upto(first - 1) do |d|
+    begin_of_week.upto(first - 1) do |d|
       cal << generate_other_month_cell(d, options)
     end unless first.wday == first_weekday
 
@@ -166,7 +166,7 @@ module CalendarHelper
 
       cal << generate_cell(cell_text, cell_attrs)
 
-      if cur.wday == last_weekday && cur != last
+      if cur.wday == last_weekday
         cal << %(</tr>)
         if cur != last
           cal << %(<tr>)
