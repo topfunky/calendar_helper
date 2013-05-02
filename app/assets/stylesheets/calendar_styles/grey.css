@@ -1,9 +1,9 @@
 /*
   A grey based theme, inspired by Blinksale and their ColorBurn widget. http://firewheeldesign.com
-  
+
   AUTHOR: Geoffrey Grosenbach http://nubyonrails.com
-  
-  Colors: 
+
+  Colors:
     dk: 787888
     lt: 4f4f5b
     lter: a8a8a8
@@ -73,10 +73,6 @@ thead tr {
 	background-color: white;
 	color: black;
 }
-
-Colors: 
-  dk: 787888
-  lt: 4f4f5b
-  lter: a8a8a8
-  white: ffffff
-
+.weekNumber {
+  background-color: #222;
+}

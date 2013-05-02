@@ -135,6 +135,16 @@ class CalendarHelperTest < Test::Unit::TestCase
     assert_match %r{<td [^>]*headers=\"calendar-2011-08-mon\"[^>]*>1</td>}, html
   end
 
+  def test_week_number_iso8601
+    html = calendar_with_defaults(:year => 2011, :month => 1, :week_number_format => :iso8601, :show_week_numbers => true, :first_day_of_week => 1)
+    [52,1,2,3,4,5].each { |cw| assert_match %r{<td class=\"weekNumber\">#{cw}</td>}, html }
+  end
+
+  def test_week_number_us_canada
+    html = calendar_with_defaults(:year => 2011, :month => 1, :week_number_format => :us_canada, :show_week_numbers => true)
+    [1,2,3,4,5,6].each { |cw| assert_match %r{<td class=\"weekNumber\">#{cw}</td>}, html }
+  end
+
   def test_non_english_language
     # mock I18n.t to simulate internationalized setting
     CalendarHelper.const_set :I18n, Class.new {
