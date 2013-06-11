@@ -158,6 +158,7 @@ module CalendarHelper
       cell_text, cell_attrs = block.call(cur)
       cell_text  ||= cur.mday
       cell_attrs ||= {}
+      cell_attrs["data-date"] = cur
       cell_attrs[:headers] = th_id(cur, options[:table_id])
       cell_attrs[:class] ||= options[:day_class]
       cell_attrs[:class] += " weekendDay" if [0, 6].include?(cur.wday)
@@ -244,6 +245,7 @@ module CalendarHelper
     cell_attrs[:headers] = th_id(date, options[:table_id])
     cell_attrs[:class] = options[:other_month_class]
     cell_attrs[:class] += " weekendDay" if weekend?(date)
+    cell_attrs["data-date"] = date
 
     cell_text = date.day
     if options[:accessible]
