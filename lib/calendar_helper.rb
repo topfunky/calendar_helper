@@ -40,6 +40,7 @@ module CalendarHelper
   #   :next_month_text   => nil                                 # Displayed right of the month name if set
   #   :month_header      => false                               # If you use false, the current month header will disappear.
   #   :calendar_title    => month_names[options[:month]]        # Pass in a custom title for the calendar. Defaults to month name
+  #   :show_other_months => true                                # Do not show the days for the previous and next months
   #
   # For more customization, you can pass a code block to this method, that will get one argument, a Date object,
   # and return a values for the individual table cells. The block can return an array, [cell_text, cell_attrs],
@@ -100,7 +101,8 @@ module CalendarHelper
       :show_week_numbers   => false,
       :week_number_class   => 'weekNumber',
       :week_number_title   => 'CW',
-      :week_number_format  => :iso8601, # :iso8601 or :us_canada
+      :week_number_format  => :iso8601, # :iso8601 or :us_canada,
+      :show_other_months   => true
     }
     options = defaults.merge options
 
@@ -241,6 +243,9 @@ module CalendarHelper
   end
 
   def generate_other_month_cell(date, options)
+    if options[:show_other_months]
+      return generate_cell("", {})
+    end
     cell_attrs = {}
     cell_attrs[:headers] = th_id(date, options[:table_id])
     cell_attrs[:class] = options[:other_month_class]
