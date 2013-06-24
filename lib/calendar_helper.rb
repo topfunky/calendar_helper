@@ -243,7 +243,7 @@ module CalendarHelper
   end
 
   def generate_other_month_cell(date, options)
-    if options[:show_other_months]
+    unless options[:show_other_months]
       return generate_cell("", {})
     end
     cell_attrs = {}
