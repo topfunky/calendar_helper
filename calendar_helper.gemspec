@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = "calendar_helper"
-  s.version = "0.2.5"
+  s.version = "0.2.6"
 
   s.author = "Geoffrey Grosenbach"
   s.email = "boss@topfunky.com"
